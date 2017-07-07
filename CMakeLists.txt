@@ -10,10 +10,6 @@ project(ppconsul)
 
 option(USE_CPPNETLIB "Use cpp-netlib as HTTP backend (CURL is used by default)" OFF)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output)
-
 if (${USE_CPPNETLIB})
     add_definitions(-DPPCONSUL_USE_CPPNETLIB)
 endif ()
@@ -22,7 +18,7 @@ set(BOOST_MIN_VERSION 1.55) # Because of https://svn.boost.org/trac/boost/ticket
 set(USE_BOOST_REGEX OFF)
 
 if (${CMAKE_CXX_COMPILER_ID} MATCHES GNU)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -fPIC")
 
     execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
     if (GCC_VERSION VERSION_LESS 4.9)
@@ -30,7 +26,7 @@ if (${CMAKE_CXX_COMPILER_ID} MATCHES GNU)
         message(STATUS "GCC ${GCC_VERSION} found. Note that using of GCC version less then 4.9 requires to link with Boost.Regex library")
     endif()
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES Clang)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -ftemplate-depth=256 -std=c++11 -stdlib=libc++")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -ftemplate-depth=256 -std=c++11 -stdlib=libc++ -fPIC")
 elseif (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 
