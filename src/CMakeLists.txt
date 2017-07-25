@@ -56,10 +56,14 @@ endif ()
 
 project(ppconsul)
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
     ${SOURCES}
     ${LIBB64_SOURCES}
 )
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+target_link_libraries(${PROJECT_NAME} ${CURL_LIBRARIES})
 
 source_group(ppconsul FILES ${SOURCES})
 source_group(libb64 FILES ${LIBB64_SOURCES})
